@@ -1,0 +1,3 @@
+[submodule "libcadin"]
+	path = libcadin
+	url = git@github.com:cadin-org/libcadin.git
