@@ -1,6 +1,4 @@
-# tmpl
-
-A template using the LÖVE framework
+# space-invaders
 
 ## Setup
 
