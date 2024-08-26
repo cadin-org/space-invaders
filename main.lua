@@ -4,6 +4,9 @@ local splash = require 'libcadin.splash-screen'
 local window = require 'libcadin.window'
 local sprites = require 'components.sprites'
 local Spaceship = require 'components.spaceship'
+local Laser = require 'components.laser'
+
+local lasers = {}
 
 function love.load()
   love.graphics.setBackgroundColor(catppuccin.MANTLE)
@@ -25,6 +28,17 @@ end
 function love.update(dt)
   sprites.update_frame(dt)
   spaceship:move('left', 'right')
+  function love.keypressed(key)
+    if key == 'space' and #lasers < 1 then
+      table.insert(lasers, Laser:new(spaceship.x + 23.5, spaceship.y))
+    end
+  end
+  for i = 1, #lasers do
+    lasers[i]:move()
+  end
+  if #lasers > 0 and lasers[1].y < game_screen.pos_y0 then
+    table.remove(lasers, 1)
+  end
 end
 
 local margin = (game_screen.width - (11 * (sprites.x + 10))) / 2
@@ -45,5 +59,9 @@ function love.draw()
     end
 
     spaceship:draw(IMG)
+
+    for i = 1, #lasers do
+      lasers[i]:draw()
+    end
   end
 end
