@@ -1,9 +1,9 @@
 local Spaceship = {}
 Spaceship.__index = Spaceship
 
-function Spaceship:new(x, y)
+function Spaceship:load(img, x, y)
   local instance = setmetatable({}, Spaceship)
-  instance.image = love.graphics.newImage 'assets/sprites/ship.png'
+  instance.img = img
   instance.x = x
   instance.y = y
   instance.speed = 5
@@ -18,8 +18,8 @@ function Spaceship:move(left, right)
   end
 end
 
-function Spaceship:draw()
-  love.graphics.draw(self.image, self.x, self.y)
+function Spaceship:draw(sprite_img)
+  love.graphics.draw(sprite_img, self.img, self.x, self.y)
 end
 
 return Spaceship
