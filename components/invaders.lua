@@ -52,13 +52,15 @@ function Invaders:move(dt)
   sprites.frame_duration = sprites.frame_duration - dt * 0.0005
 
   if Invaders.ROW < 16 then
-    if self.x < game_screen.pos_x1 - sprites.y - 10 and Invaders.SPD > 0 then
-      self.x = self.x + Invaders.SPD
-    elseif self.x > game_screen.pos_x0 + 5 and Invaders.SPD < 0 then
-      self.x = self.x + Invaders.SPD
-    else
-      Invaders.ROW = Invaders.ROW + 1
-      Invaders.SPD = -Invaders.SPD * 1.1
+    if self.alive then
+      if self.x < game_screen.pos_x1 - sprites.y - 10 and Invaders.SPD > 0 then
+        self.x = self.x + Invaders.SPD
+      elseif self.x > game_screen.pos_x0 + 5 and Invaders.SPD < 0 then
+        self.x = self.x + Invaders.SPD
+      else
+        Invaders.ROW = Invaders.ROW + 1
+        Invaders.SPD = -Invaders.SPD * 1.1
+      end
     end
   else
     -- GAME OVER ?
