@@ -4,14 +4,17 @@ local sprites = require 'components.sprites'
 local Invaders = {}
 Invaders.__index = Invaders
 
+Invaders.ROW = 0
+Invaders.SPD = 1
+
 local function new_invader(sprite_img, kind, x, y, row)
   local instance = setmetatable({}, Invaders)
   instance.img = sprite_img
   instance.kind = kind
   instance.x = x
   instance.y = y
-  instance.speed = 2
-  instance.row = row -- not sure about the row logic yet
+  -- instance.speed = 2
+  -- instance.row = row -- not sure about the row logic yet
   instance.alive = true
   return instance
 end
@@ -40,37 +43,31 @@ function Invaders:load_table(sprite_img, x0, y0)
 end
 
 function Invaders:increase_speed(factor)
-  self.speed = self.speed * factor
+  Invaders.SPD = Invaders.SPD * factor
 end
 
 local delta = 0
 
 function Invaders:move(dt)
-  delta = delta + dt
+  sprites.frame_duration = sprites.frame_duration - dt * 0.0005
 
-  if delta > 0 then
-    if self.row < 6 then
-      if self.x < game_screen.pos_x1 - sprites.y - 10 and self.speed > 0 then
-        self.x = self.x + self.speed
-      elseif self.x > game_screen.pos_x0 + 5 and self.speed < 0 then
-        self.x = self.x + self.speed
-      else
-        self.x = self.x - self.speed
-        self.y = self.y + sprites.y * 1.2
-        self.speed = -self.speed
-        self.row = self.row - 1
-      end
+  if Invaders.ROW < 16 then
+    if self.x < game_screen.pos_x1 - sprites.y - 10 and Invaders.SPD > 0 then
+      self.x = self.x + Invaders.SPD
+    elseif self.x > game_screen.pos_x0 + 5 and Invaders.SPD < 0 then
+      self.x = self.x + Invaders.SPD
     else
-      -- GAME OVER ?
+      Invaders.ROW = Invaders.ROW + 1
+      Invaders.SPD = -Invaders.SPD * 1.1
     end
-
-    delta = 0
+  else
+    -- GAME OVER ?
   end
 end
 
 function Invaders:draw(sprite_img, frame)
   if self.alive then
-    love.graphics.draw(sprite_img, self.img[frame], self.x, self.y)
+    love.graphics.draw(sprite_img, self.img[frame], self.x, self.y + Invaders.ROW * sprites.y)
   end
 end
 
