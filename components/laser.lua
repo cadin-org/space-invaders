@@ -2,27 +2,30 @@ local game_screen = require 'libcadin.game-screen'
 
 local laser = {}
 
-laser.laser_on = false
-laser.x = nil
-laser.y = nil
+laser.cooldown = false
+laser.x = 0
+laser.y = 0
 laser.speed = 10
 
 function laser:move()
-  if self.laser_on then
+  if self.cooldown then
     self.y = self.y - self.speed
     if laser.y < game_screen.pos_y0 then
-      laser.laser_on = false
+      laser.cooldown = false
     end
   end
 end
 
-function laser:draw(spaceship_x, spaceship_y)
-  if not self.laser_on then
-    self.x = spaceship_x + 22.5
-    self.y = spaceship_y - 15
+function laser:fire(spaceship)
+  if not laser.cooldown then
+    self.x = spaceship.x + 22.5
+    self.y = spaceship.y - 15
+    laser.cooldown = true
   end
+end
 
-  if self.y > game_screen.pos_y0 and self.laser_on == true then
+function laser:draw()
+  if self.y > game_screen.pos_y0 and self.cooldown then
     love.graphics.rectangle('fill', self.x, self.y, 4, 10)
   end
 end

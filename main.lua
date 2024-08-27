@@ -32,9 +32,10 @@ function love.update(dt)
   end
 
   spaceship:move('left', 'right')
+
   function love.keypressed(key)
     if key == 'space' then
-      laser.laser_on = true
+      laser:fire(spaceship)
     end
   end
 
@@ -53,7 +54,6 @@ function love.draw()
     end
 
     spaceship:draw(IMG)
-
-    laser:draw(spaceship.x, spaceship.y)
+    laser:draw()
   end
 end
