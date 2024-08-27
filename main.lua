@@ -5,9 +5,7 @@ local window = require 'libcadin.window'
 local sprites = require 'components.sprites'
 local Invaders = require 'components.invaders'
 local Spaceship = require 'components.spaceship'
-local Laser = require 'components.laser'
-
-local lasers = {}
+local laser = require 'components.laser'
 
 local IMG = love.graphics.newImage 'assets/sprites/sprite_sheet.png'
 
@@ -35,16 +33,12 @@ function love.update(dt)
 
   spaceship:move('left', 'right')
   function love.keypressed(key)
-    if key == 'space' and #lasers < 1 then
-      table.insert(lasers, Laser:new(spaceship.x + 23.5, spaceship.y))
+    if key == 'space' then
+      laser.laser_on = true
     end
   end
-  for i = 1, #lasers do
-    lasers[i]:move()
-  end
-  if #lasers > 0 and lasers[1].y < game_screen.pos_y0 then
-    table.remove(lasers, 1)
-  end
+
+  laser:move()
 end
 
 function love.draw()
@@ -60,8 +54,6 @@ function love.draw()
 
     spaceship:draw(IMG)
 
-    for i = 1, #lasers do
-      lasers[i]:draw()
-    end
+    laser:draw(spaceship.x, spaceship.y)
   end
 end
