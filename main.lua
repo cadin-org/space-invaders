@@ -57,6 +57,6 @@ function love.draw()
 
     spaceship:draw(IMG)
     laser:draw()
-    scoreboard.draw(spaceship)
+    scoreboard.draw(laser)
   end
 end

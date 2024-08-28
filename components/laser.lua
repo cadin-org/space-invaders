@@ -9,6 +9,7 @@ laser.y0 = 0
 laser.width = 4
 laser.height = 10
 laser.speed = 11
+laser.score = 0
 
 function laser:move(invaders_table)
   if self.cooldown then
@@ -34,6 +35,8 @@ function laser:move(invaders_table)
           self.y0 = 0
           inv.alive = false
           self.cooldown = false
+
+          self.score = self.score + (10 * (invaders_table[i].ROW + 1))
           break
         end
       end
