@@ -1,8 +1,8 @@
 local M = {}
 
 --  sprite dimensions
-M.x = 48
-M.y = 36
+M.width = 48 -- x
+M.height = 36 -- y
 
 -- sprite animation
 M.current_frame = 1
@@ -20,22 +20,22 @@ end
 function M.load_invaders(img)
   return {
     {
-      love.graphics.newQuad(0, 0, M.x, M.y, img),
-      love.graphics.newQuad(M.x, 0, M.x, M.y, img),
+      love.graphics.newQuad(0, 0, M.width, M.height, img),
+      love.graphics.newQuad(M.width, 0, M.width, M.height, img),
     },
     {
-      love.graphics.newQuad(0, M.y, M.x, M.y, img),
-      love.graphics.newQuad(M.x, M.y, M.x, M.y, img),
+      love.graphics.newQuad(0, M.height, M.width, M.height, img),
+      love.graphics.newQuad(M.width, M.height, M.width, M.height, img),
     },
     {
-      love.graphics.newQuad(0, (2 * M.y), M.x, M.y, img),
-      love.graphics.newQuad(M.x, (2 * M.y), M.x, M.y, img),
+      love.graphics.newQuad(0, (2 * M.height), M.width, M.height, img),
+      love.graphics.newQuad(M.width, (2 * M.height), M.width, M.height, img),
     },
   }
 end
 
 function M.load_ship(img)
-  return love.graphics.newQuad((M.x / 2), (4 * M.y), M.x, M.y, img)
+  return love.graphics.newQuad((M.width / 2), (4 * M.height), M.width, M.height, img)
 end
 
 return M
