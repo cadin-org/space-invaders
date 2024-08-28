@@ -9,6 +9,7 @@ function Spaceship:load(img, x, y)
   instance.x = x
   instance.y = y
   instance.speed = 5
+  instance.score = 0
   return instance
 end
 

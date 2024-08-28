@@ -6,6 +6,7 @@ local sprites = require 'components.sprites'
 local Invaders = require 'components.invaders'
 local Spaceship = require 'components.spaceship'
 local laser = require 'components.laser'
+local scoreboard = require 'components.scoreboard'
 
 local IMG = love.graphics.newImage 'assets/sprites/sprite_sheet.png'
 
@@ -55,5 +56,6 @@ function love.draw()
 
     spaceship:draw(IMG)
     laser:draw()
+    scoreboard.draw(spaceship)
   end
 end
