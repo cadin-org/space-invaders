@@ -25,7 +25,13 @@ local invaders_table = Invaders:load_table(invaders_img, game_screen.pos_x0, gam
 function NEW_GAME()
   spaceship = Spaceship:load(ship_img, window.center.x - (sprites.width / 2), game_screen.pos_y1 - sprites.height - 10)
   invaders_table = Invaders:load_table(invaders_img, game_screen.pos_x0, game_screen.pos_y0)
+  Invaders.ROW = 0
+  Invaders.SPD = 0.9
+  sprites.current_frame = 1
+  sprites.frame_duration = 1
+  laser.cooldown = false
 
+  SCORE = 0
   GAME_STATE = 'playing'
 end
 
@@ -77,7 +83,7 @@ function love.draw()
 
       spaceship:draw(IMG)
       laser:draw()
-      scoreboard.draw(laser)
+      scoreboard.draw(SCORE)
     end
   end
 end
