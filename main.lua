@@ -56,12 +56,6 @@ function love.update(dt)
     end
 
     spaceship:move('left', 'right')
-
-    function love.keypressed(key)
-      if key == 'space' then
-        laser:fire(spaceship)
-      end
-    end
   end
 end
 
@@ -89,7 +83,9 @@ function love.draw()
 end
 
 function love.keypressed(key)
-  if key == 'p' and GAME_STATE == 'playing' then
+  if key == 'space' and GAME_STATE == 'playing' then
+    laser:fire(spaceship)
+  elseif key == 'p' and GAME_STATE == 'playing' then
     GAME_STATE = 'pause_screen'
   elseif GAME_STATE == 'title_screen' then
     menu.handle_input(MAIN_MENU, key)
