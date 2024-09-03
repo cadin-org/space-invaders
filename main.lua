@@ -22,6 +22,7 @@ local invaders_img = sprites.load_invaders(IMG)
 local ship_img = sprites.load_ship(IMG)
 local spaceship = Spaceship:load(ship_img, window.center.x - (sprites.width / 2), game_screen.pos_y1 - sprites.height - 10)
 local invaders_table = Invaders:load_table(invaders_img, game_screen.pos_x0, game_screen.pos_y0)
+local start_sound = love.audio.newSource('assets/sounds/365635__obxjohn__laser-gun-pew-pew.wav', 'static')
 
 function NEW_GAME()
   spaceship = Spaceship:load(ship_img, window.center.x - (sprites.width / 2), game_screen.pos_y1 - sprites.height - 10)
@@ -34,6 +35,7 @@ function NEW_GAME()
 
   SCORE = 0
   GAME_STATE = 'playing'
+  start_sound:play()
 end
 
 function love.load()

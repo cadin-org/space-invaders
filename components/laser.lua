@@ -1,6 +1,8 @@
 local game_screen = require 'libcadin.game-screen'
 local sprites = require 'components.sprites'
 
+local laser_sound = love.audio.newSource('assets/sounds/321102__nsstudios__laser1.wav', 'static')
+
 local laser = {}
 
 laser.cooldown = false
@@ -48,6 +50,7 @@ function laser:fire(spaceship)
     self.x0 = spaceship.x + 22.5
     self.y0 = spaceship.y - 15
     self.cooldown = true
+    laser_sound:play()
   end
 end
 
