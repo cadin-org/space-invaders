@@ -9,6 +9,7 @@ local Invaders = require 'components.invaders'
 local Spaceship = require 'components.spaceship'
 local laser = require 'components.laser'
 local scoreboard = require 'components.scoreboard'
+local invaders_laser = require 'components.invaders-laser'
 
 -- single_player
 GAME_MODE = 'single_player'
@@ -53,6 +54,8 @@ function love.update(dt)
     sprites.frame_duration = sprites.frame_duration - dt * 0.02
 
     laser:move(invaders_table)
+    invaders_laser:fire(invaders_table)
+    invaders_laser:move(spaceship)
 
     for i = 1, #invaders_table do
       invaders_table[i]:move(dt, laser)
@@ -80,6 +83,7 @@ function love.draw()
 
       spaceship:draw(IMG)
       laser:draw()
+      invaders_laser:draw()
       scoreboard.draw(SCORE)
     end
   end
