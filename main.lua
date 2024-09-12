@@ -90,7 +90,8 @@ function love.draw()
       invaders_laser:draw()
       scoreboard.draw(SCORE)
     elseif GAME_STATE == 'gameover' then
-      love.graphics.printf('GAME OVER', fonts.ps2p_large, 0, window.center.y - 50, window.width, 'center')
+      love.graphics.printf('GAME OVER', fonts.ps2p_large, 0, window.center.y - 200, window.width, 'center')
+      menu.draw(MAIN_MENU)
     end
   end
 end
@@ -100,7 +101,7 @@ function love.keypressed(key)
     laser:fire(spaceship)
   elseif key == 'p' and GAME_STATE == 'playing' then
     GAME_STATE = 'pause_screen'
-  elseif GAME_STATE == 'title_screen' then
+  elseif GAME_STATE == 'title_screen' or GAME_STATE == 'gameover' then
     menu.handle_input(MAIN_MENU, key)
   elseif GAME_STATE == 'pause_screen' then
     menu.handle_input(PAUSE_MENU, key)
