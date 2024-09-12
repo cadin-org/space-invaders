@@ -62,6 +62,10 @@ function love.update(dt)
     end
 
     spaceship:move('left', 'right')
+
+    if spaceship.lives == 0 then
+      GAME_STATE = 'gameover'
+    end
   end
 end
 
@@ -85,6 +89,8 @@ function love.draw()
       laser:draw()
       invaders_laser:draw()
       scoreboard.draw(SCORE)
+    elseif GAME_STATE == 'gameover' then
+      love.graphics.printf('GAME OVER', fonts.ps2p_large, 0, window.center.y - 50, window.width, 'center')
     end
   end
 end

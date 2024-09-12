@@ -15,7 +15,7 @@ function invaders_laser:fire(invaders_table)
     for i = 1, #invaders_table do
       local inv = invaders_table[i]
       if inv.alive then
-        if math.random(1, 10000) == 1 then
+        if math.random(1, 20000) == 1 then
           self.x0 = (inv.x0 + sprites.width) + 15
           self.y0 = (inv.y0 + sprites.height + inv.ROW * sprites.height) + 35
           self.cooldown = true
