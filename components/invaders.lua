@@ -1,5 +1,6 @@
 local game_screen = require 'libcadin.game-screen'
 local sprites = require 'components.sprites'
+local invaders_laser = require 'components.invaders-laser'
 
 local Invaders = {}
 Invaders.__index = Invaders
@@ -14,6 +15,7 @@ local function new_invader(sprite_img, kind, x, y)
   instance.x0 = x
   instance.y0 = y
   instance.alive = true
+  instance.laser = nil
   return instance
 end
 
@@ -71,6 +73,10 @@ function Invaders:move(laser)
   else
     -- GAME OVER ?
   end
+end
+
+function Invaders:fire()
+  self.laser = invaders_laser.new(self.x0, self.y0, self.ROW)
 end
 
 function Invaders:draw(sprite_img, frame)

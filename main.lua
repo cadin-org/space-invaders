@@ -46,19 +46,36 @@ function love.load()
   love.graphics.setFont(fonts.ps2p_large)
 
   splash.load()
+  Pick_invader = 0
+  TIME = 0
 end
 
 function love.update(dt)
   if GAME_STATE == 'playing' then
+    TIME = TIME + dt
     sprites.update_frame(dt)
     sprites.frame_duration = sprites.frame_duration - dt * 0.02
 
     laser:move(invaders_table)
-    invaders_laser:fire(invaders_table)
-    invaders_laser:move(spaceship)
+
+    if math.ceil(TIME) > 1 then
+      Pick_invader = math.random(1, #invaders_table)
+      for i = 1, #invaders_table do
+        if Pick_invader == i then
+          if invaders_table[i].alive and invaders_table[i].laser == nil then
+            invaders_table[i]:fire()
+          end
+        end
+      end
+
+      TIME = 0
+    end
 
     for i = 1, #invaders_table do
       invaders_table[i]:move(dt, laser)
+      if invaders_table[i].laser ~= nil then
+        invaders_laser.move(invaders_table[i].laser, spaceship, invaders_table[i])
+      end
     end
 
     spaceship:move('left', 'right')
@@ -81,13 +98,17 @@ function love.draw()
     elseif GAME_STATE == 'playing' then
       game_screen.frame()
       love.graphics.printf('press P to pause the game', fonts.ps2p_small, 0, game_screen.pos_y1 + 20, window.width, 'center')
+      -- TODO: display lives in a better way
+      love.graphics.printf(spaceship.lives .. ' spaceship(s) left', fonts.ps2p_small, 0, game_screen.pos_y1 + 60, window.width, 'center')
       for i = 1, #invaders_table do
         invaders_table[i]:draw(IMG, sprites.current_frame)
+        if invaders_table[i].laser ~= nil then
+          invaders_laser.draw(invaders_table[i].laser)
+        end
       end
 
       spaceship:draw(IMG)
       laser:draw()
-      invaders_laser:draw()
       scoreboard.draw(SCORE)
     elseif GAME_STATE == 'gameover' then
       love.graphics.printf('GAME OVER', fonts.ps2p_large, 0, window.center.y - 200, window.width, 'center')
