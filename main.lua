@@ -45,7 +45,6 @@ function love.load()
   love.graphics.setFont(fonts.ps2p_large)
 
   splash.load()
-  Pick_invader = 0
   TIME = 0
 end
 
@@ -54,24 +53,22 @@ function love.update(dt)
     TIME = TIME + dt
     sprites.update_frame(dt)
     sprites.frame_duration = sprites.frame_duration - dt * 0.02
+    local pick_invader = 0
 
     laser:move(invaders_table)
 
     if math.ceil(TIME) > 1 then
-      Pick_invader = math.random(1, #invaders_table)
-      for i = 1, #invaders_table do
-        if Pick_invader == i then
-          if invaders_table[i].alive and invaders_table[i].laser == nil then
-            invaders_table[i]:fire()
-          end
-        end
-      end
-
+      pick_invader = math.random(1, #invaders_table)
       TIME = 0
     end
 
     for i = 1, #invaders_table do
-      invaders_table[i]:move(spaceship)
+      local invader = invaders_table[i]
+      invader:move(spaceship)
+
+      if pick_invader == i and invader.alive and invader.laser == nil then
+        invader:fire()
+      end
     end
 
     spaceship:move('left', 'right')
