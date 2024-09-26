@@ -59,7 +59,7 @@ function Invaders:move(spaceship)
         then
           self.laser = nil
           spaceship.lives = spaceship.lives - 1
-        elseif self.laser.y0 > game_screen.pos_y1 then
+        elseif self.laser.y0 + self.laser.height > game_screen.pos_y1 then
           self.laser = nil
         end
       end
@@ -90,7 +90,7 @@ function Invaders:draw(sprite_img, frame)
   if self.alive then
     love.graphics.draw(sprite_img, self.img[frame], self.x0, self.y0 + Invaders.ROW * sprites.height)
 
-    if self.laser ~= nil and self.laser.y0 < game_screen.pos_y1 then
+    if self.laser ~= nil then
       love.graphics.rectangle('fill', self.laser.x0, self.laser.y0, self.laser.width, self.laser.height)
     end
   end
