@@ -9,7 +9,6 @@ local Invaders = require 'components.invaders'
 local Spaceship = require 'components.spaceship'
 local laser = require 'components.laser'
 local scoreboard = require 'components.scoreboard'
-local invaders_laser = require 'components.invaders-laser'
 
 -- single_player
 GAME_MODE = 'single_player'
@@ -72,10 +71,7 @@ function love.update(dt)
     end
 
     for i = 1, #invaders_table do
-      invaders_table[i]:move(dt, laser)
-      if invaders_table[i].laser ~= nil then
-        invaders_laser.move(invaders_table[i].laser, spaceship, invaders_table[i])
-      end
+      invaders_table[i]:move(spaceship)
     end
 
     spaceship:move('left', 'right')
@@ -102,9 +98,6 @@ function love.draw()
       love.graphics.printf(spaceship.lives .. ' spaceship(s) left', fonts.ps2p_small, 0, game_screen.pos_y1 + 60, window.width, 'center')
       for i = 1, #invaders_table do
         invaders_table[i]:draw(IMG, sprites.current_frame)
-        if invaders_table[i].laser ~= nil then
-          invaders_laser.draw(invaders_table[i].laser)
-        end
       end
 
       spaceship:draw(IMG)

@@ -1,6 +1,5 @@
 local game_screen = require 'libcadin.game-screen'
 local sprites = require 'components.sprites'
-local invaders_laser = require 'components.invaders-laser'
 
 local Invaders = {}
 Invaders.__index = Invaders
@@ -46,22 +45,24 @@ function Invaders:increase_speed(factor)
   Invaders.SPD = Invaders.SPD * factor
 end
 
-function Invaders:move(laser)
+function Invaders:move(spaceship)
   if Invaders.ROW < 16 then
     if self.alive then
-      -- OTHER OPTION FOR LASER X INVADER COLLISION
-      -- if
-      --   laser.x0 + laser.width >= self.x0
-      --   and laser.x0 <= self.x0 + sprites.width
-      --   and laser.y0 <= self.y0 + sprites.height + Invaders.ROW * sprites.height
-      --   and laser.y0 + laser.height >= self.y0 + Invaders.ROW * sprites.height
-      -- then
-      --   laser.x0 = 0
-      --   laser.y0 = 0
-      --   self.alive = false
-      --   laser.cooldown = false
-      --   return
-      -- end
+      if self.laser ~= nil then
+        self.laser.y0 = self.laser.y0 + self.laser.speed
+
+        if
+          self.laser.x0 + self.laser.width >= spaceship.x
+          and self.laser.x0 <= spaceship.x + sprites.width
+          and self.laser.y0 <= spaceship.y + sprites.height
+          and self.laser.y0 + self.laser.height >= spaceship.y -- is this line necessary?
+        then
+          self.laser = nil
+          spaceship.lives = spaceship.lives - 1
+        elseif self.laser.y0 > game_screen.pos_y1 then
+          self.laser = nil
+        end
+      end
 
       if (self.x0 < game_screen.pos_x1 - sprites.width - 4 and Invaders.SPD > 0) or (self.x0 > game_screen.pos_x0 + 4 and Invaders.SPD < 0) then
         self.x0 = self.x0 + Invaders.SPD
@@ -76,12 +77,22 @@ function Invaders:move(laser)
 end
 
 function Invaders:fire()
-  self.laser = invaders_laser.new(self.x0, self.y0, self.ROW)
+  self.laser = {
+    x0 = self.x0 + (sprites.width / 2),
+    y0 = self.y0 + sprites.height + (self.ROW * sprites.height),
+    width = 2,
+    height = 20,
+    speed = 5,
+  }
 end
 
 function Invaders:draw(sprite_img, frame)
   if self.alive then
     love.graphics.draw(sprite_img, self.img[frame], self.x0, self.y0 + Invaders.ROW * sprites.height)
+
+    if self.laser ~= nil and self.laser.y0 < game_screen.pos_y1 then
+      love.graphics.rectangle('fill', self.laser.x0, self.laser.y0, self.laser.width, self.laser.height)
+    end
   end
 end
 
