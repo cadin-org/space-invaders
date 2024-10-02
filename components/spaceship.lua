@@ -9,6 +9,7 @@ function Spaceship:load(img, x, y)
   instance.x = x
   instance.y = y
   instance.speed = 5
+  instance.lives = 3
   return instance
 end
 
@@ -21,7 +22,9 @@ function Spaceship:move(left, right)
 end
 
 function Spaceship:draw(sprite_img)
-  love.graphics.draw(sprite_img, self.img, self.x, self.y)
+  if self.lives > 0 then
+    love.graphics.draw(sprite_img, self.img, self.x, self.y)
+  end
 end
 
 return Spaceship
