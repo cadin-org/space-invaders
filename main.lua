@@ -26,8 +26,9 @@ local invaders_table = Invaders:load_table(invaders_img, game_screen.pos_x0, gam
 function NEW_GAME()
   spaceship = Spaceship:load(ship_img, window.center.x - (sprites.width / 2), game_screen.pos_y1 - sprites.height - 10)
   invaders_table = Invaders:load_table(invaders_img, game_screen.pos_x0, game_screen.pos_y0)
-  Invaders.ROW = 0
+  Invaders.RANK = 0
   Invaders.SPD = 0.9
+  Invaders.VANGUARD_TABLE = Invaders:new_vanguard_table()
   sprites.current_frame = 1
   sprites.frame_duration = 1
   laser.cooldown = false
@@ -57,23 +58,35 @@ function love.update(dt)
 
     laser:move(invaders_table)
 
-    if math.ceil(TIME) > 1 then
-      pick_invader = math.random(1, #invaders_table)
-      TIME = 0
-    end
-
     for i = 1, #invaders_table do
       local invader = invaders_table[i]
       invader:move(spaceship)
 
-      if pick_invader == i and invader.alive and invader.laser == nil then
-        invader:fire()
+      if math.ceil(TIME) > 1 then
+        if invader.alive and invader.laser == nil and invader.row == Invaders.VANGUARD[invader.column] then
+          pick_invader = math.random(1, 60)
+
+          if pick_invader == 1 then
+            invader:fire()
+            TIME = 0
+          end
+        end
       end
     end
 
     spaceship:move('left', 'right')
 
     if spaceship.lives == 0 then
+      GAME_STATE = 'gameover'
+    end
+
+    local vanguard_row_sum = 0
+    for _, value in ipairs(Invaders.VANGUARD) do
+      vanguard_row_sum = vanguard_row_sum + value
+    end
+
+    if vanguard_row_sum == 0 then
+      -- TODO: IMPLEMENT VICTORY
       GAME_STATE = 'gameover'
     end
   end

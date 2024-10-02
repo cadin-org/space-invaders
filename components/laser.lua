@@ -27,15 +27,16 @@ function laser:move(invaders_table)
         if
           self.x0 + laser.width >= inv.x0
           and self.x0 <= inv.x0 + sprites.width
-          and self.y0 <= inv.y0 + sprites.height + inv.ROW * sprites.height
-          and self.y0 + laser.height >= inv.y0 + inv.ROW * sprites.height
+          and self.y0 <= inv.y0 + sprites.height + inv.RANK * sprites.height
+          and self.y0 + laser.height >= inv.y0 + inv.RANK * sprites.height
         then
           self.x0 = 0
           self.y0 = 0
           inv.alive = false
+          inv:swap_vanguard()
           self.cooldown = false
 
-          SCORE = SCORE + (10 * (invaders_table[i].ROW + 1))
+          SCORE = SCORE + (10 * inv.kind)
           break
         end
       end
